@@ -30,7 +30,7 @@
             chatBox.appendChild(messageElement);
 
             // Nachricht an den Cloudflare Worker senden
-            fetch('https://dein-worker-url.workers.dev/send', {
+            fetch('https://chat.lokrogamer-29.workers.dev/send', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
