@@ -3,46 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Messenger</title>
+    <title>Mein Messenger</title>
 </head>
 <body>
-    <h1>Messenger Portal</h1>
+    <h1>Mein Messenger</h1>
 
     <!-- Nachrichtenanzeige -->
     <div id="chat-box" style="border: 1px solid #ccc; height: 300px; overflow-y: scroll; margin-bottom: 10px;">
-        <!-- Nachrichten werden hier angezeigt -->
+        <!-- Nachrichten erscheinen hier -->
     </div>
 
-    <!-- Nachricht senden -->
+    <!-- Nachrichteneingabe -->
     <input type="text" id="message-input" placeholder="Nachricht eingeben" />
     <button onclick="sendMessage()">Senden</button>
 
     <script>
-        // Funktion, um eine Nachricht zu senden
+        // Funktion, um die Nachricht zu senden
         function sendMessage() {
             const message = document.getElementById("message-input").value;
             if (message.trim() === "") return;
 
-            // Füge die Nachricht zur Chatbox hinzu
+            // Nachricht zur Chatbox hinzufügen
             const chatBox = document.getElementById("chat-box");
             const messageElement = document.createElement("div");
             messageElement.textContent = "Du: " + message;
             chatBox.appendChild(messageElement);
 
-            // Leere das Eingabefeld
-            document.getElementById("message-input").value = "";
-
             // Nachricht an den Cloudflare Worker senden
-            fetch('https://deine-worker-url.workers.dev/message', {
+            fetch('https://dein-worker-url.workers.dev/send', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ message: message })
+                body: JSON.stringify({ message: message, userId: 'Benutzer1' }) // Beispiel: Sende eine Nachricht von Benutzer1
             })
             .then(response => response.json())
             .then(data => {
-                // Empfangene Antwort anzeigen
                 const responseMessage = document.createElement("div");
                 responseMessage.textContent = "Empfänger: " + data.message;
                 chatBox.appendChild(responseMessage);
@@ -51,6 +47,9 @@
             .catch(error => {
                 console.error('Fehler:', error);
             });
+
+            // Eingabefeld leeren
+            document.getElementById("message-input").value = "";
         }
     </script>
 </body>
